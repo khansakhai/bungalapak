@@ -7,11 +7,11 @@ Tautan menuju PWS deployment dapat diakses [di sini](http://khansa-khairunisa31-
 Pada tugas ini, akan dilakukan implementasi dari konsep *Model-View-Template* (MVT) pada Django.
 
 ### Langkah Implementasi Checklist
-Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasi checklist dari Tugas 2.
+Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 2.
 
 #### Membuat proyek Django
-1. Langkah pertama, saya membuat direktori baru dengan nama `bungalapak` dan masuk ke direktori tersebut.
-2. Setelah itu, saya membuat *virtual environment* di dalam direktori tersebut dengan menjalankan perintah berikut di terminal.
+1. Langkah pertama, saya membuat direktori baru dengan nama `bungalapak` dan masuk ke dalam direktori tersebut.
+2. Setelah itu, saya membuat *virtual environment* dengan menjalankan perintah berikut di terminal.
     ```
     py -m venv env
     ```
@@ -47,7 +47,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasi checklis
     ```
     git branch -M master
     ```
-12. Untuk menghubungkan *repository* lokal dengan *repository* GitHub, saya menjalankan perintah berikut.
+12. Untuk menghubungkan direktori lokal dengan *repository* GitHub, saya menjalankan perintah berikut.
     ```
     git remote add origin https://github.com/khansakhai/bungalapak.git
     ```
@@ -105,7 +105,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasi checklis
     <h5>Class: </h5>
     <p>{{ class }}</p>
     ```
-21. Setelah mendefinisikan template, kita perlu mengintegrasikannya dengan view. Untuk itu, pada  berkas `views.py` pada direktori aplikasi `main`, saya menambahkan fungsi `show_main` yang akan mengatur permintaan HTTP dan mengembalikan tampilan yang sesuai dengan template. Di dalamnya, saya menambahkan *dictionary* yang berisi data yang akan dikirimkan ke tampilan, mencakup nama dan kelas. Berikut adalah kode yang saya tambahkan.
+21. Setelah mendefinisikan template, kita perlu mengintegrasikannya dengan view. Untuk itu, pada  berkas `views.py` pada direktori aplikasi `main`, saya menambahkan fungsi `show_main` yang akan mengatur permintaan HTTP dan mengembalikan tampilan yang sesuai dengan template. Di dalamnya, saya menambahkan *dictionary* yang berisi data yang akan dikirimkan ke tampilan, mencakup nama aplikasi, nama, dan kelas. Berikut adalah kode yang saya tambahkan.
     ```
     from django.shortcuts import render
 
@@ -145,7 +145,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasi checklis
     ```
 28. Setelah menunggu beberapa menit, aplikasi saya sudah terdeploy dan dapat diakses melalui tautan deployment PWS.
 
-### Bagan
+### Bagan alur MVT
 ![MVT Diagram](images/mvt_diagram.png)
 Proses dimulai ketika client atau browser mengirimkan permintaan HTTP ke ke server. Permintaan ini diarahkan ke URL routing yang didefinisikan dalam berkas `urls.py`. Berdasarkan URL yang diminta, Django akan mengarahkan permintaan ini ke fungsi atau kelas yang sesuai di berkas `views.py`. Fungsi view ini kemudian melakukan *query* ke basis data menggunakan model yang didefinisikan di berkas `models.py`, untuk mengakses atau memanipulasi data yang diperlukan. Data yang diperoleh selanjutnya diproses dan diteruskan ke template HTML, yang ditentukan dalam berkas template, seperti `main.html`. Template ini akan me-render data menjadi format HTML yang kemudian dikirimkan sebagai respons dari fungsi view kepada client, sehingga client dapat melihat halaman yang diminta. 
 
