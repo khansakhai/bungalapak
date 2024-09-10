@@ -4,7 +4,7 @@ Proyek Django untuk tugas mata Pemrograman Berbasis Platform Ganjil 2024/2025. D
 Link untuk PWS deployment dapat diakses [di sini](http://khansa-khairunisa31-bungalapak.pbp.cs.ui.ac.id/).
 
 ## Tugas 2 
-Pada tugas ini, kami akan mengimplementasikan konsep *Model-View-Template* (MVT) pada Django.
+Pada tugas ini, akan dilakukan implementasi dari konsep *Model-View-Template* (MVT) pada Django.
 
 ### Langkah Implementasi Checklist
 Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasi checklist dari Tugas 2.
