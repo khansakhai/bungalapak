@@ -82,9 +82,9 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
 17. Untuk membuat model, saya memodifikasi berkas `models.py` pada direktori aplikasi `main` dengan model bernama `Product` yang memiliki atribut `name`, `price`, dan `description`. Berikut adalah kode yang saya tambahkan.
     ```
     class Product(models.Model):
-    name = models.CharField(max_length=255)
-    price = models.IntegerField()
-    description = models.TextField()
+        name = models.CharField(max_length=255)
+        price = models.IntegerField()
+        description = models.TextField()
     ```
     Model ini memiliki atribut `name` yang berupa CharField dengan panjang maksimal 255, `price` yang berupa IntegerField, dan `description` yang berupa TextField. Ketiga atribut tersebut nantinya akan digunakan untuk mendefinisikan sebuah *item* yang ada pada aplikasi. 
 18. Setelah itu, saya membuat migrasi model dan melakukan migrasi ke dalam basis data lokal dengan menjalankan perintah berikut.
