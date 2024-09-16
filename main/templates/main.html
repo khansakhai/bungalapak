@@ -1,6 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
 <h1>{{ app_name }}</h1>
 
 <h5>Name: </h5>
 <p>{{ name }}</p>
 <h5>Class: </h5>
 <p>{{ class }}</p>
+
+{% if not items %}
+<p>Belum ada data item pada Bungalapak</p>
+{% else %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <th>{{item.name}}</th>
+        <th>{{item.price}}</th>
+        <th>{{item.description}}</th>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_item' %}">
+    <button>Add New Item</button>
+</a>
+{% endblock content %}
