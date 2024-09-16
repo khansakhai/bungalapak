@@ -157,3 +157,192 @@ Django dijadikan permulaan pembelajaran pengembangan perangkat lunak terutama pa
 
 ### Mengapa model pada Django disebut sebagai ORM?
 Model pada Django disebut sebagai *Object-Relational Mapping* (ORM) karena berfungsi untuk memetakan objek Python ke struktur basis data. Dengan ORM, tabel dalam basis data direpresentasikan sebagai kelas, dan kolom tabel sebagai atribut kelas. Ini memungkinkan pengembang untuk berinteraksi dengan basis data menggunakan pemrograman Python, tanpa perlu menulis SQL secara langsung, sehingga memudahkan pengelolaan data dan menjaga kode agar tetap konsisten dan mudah dipahami. 
+
+## Tugas 3
+Pada tugas ini, akan dilakukan implementasi dari Form dan Data Delivery pada Django.
+
+### Langkah Implementasi Checklist
+Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 3.
+
+#### Membuat input form
+1. Sebelum membuat form, saya membuat kerangka views dari situs web. Untuk itu, saya membuat direktori baru `templates` di direktori utama (root folder) dan membuat berkas baru bernama `base.html` di dalamnya. Saya mengisi berkas tersebut dengan kode berikut.
+    ```html
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            {% block meta %} {% endblock meta %}
+        </head>
+
+        <body>
+            {% block content %} {% endblock content %}
+        </body>
+    </html>
+    ```
+    Berkas `base.html` ini merupakan suatu template dasar yang memiliki baris-baris yang dikurung dalam `{% ... %}`, di mana baris-baris inilah yang akan berfungsi untuk memuat data secara dinamis dari Django ke HTML. Sebagai contoh, template turunan akan me-*extend* template dasar, yaitu `base.html` dan mengganti konten di dalam block `{% block content %}` sesuai kebutuhan. 
+2. Selanjutnya, kita perlu melakukan konfigurasi pada `settings.py` agar berkas `base.html` dapat terdeteksi sebagai template dasar. Berikut adalah baris kode yang saya tambahkan.
+    ```python
+    TEMPLATES = [
+        {
+            ...
+            'DIRS': [BASE_DIR / 'templates'],
+            ...
+        },
+    ]
+    ```
+    Setelah itu, `base.html` sudah dapat digunakan sebagai template dasar.
+3. Kemudian, saya mengubah berkas `main.html` yang terdapat di dalam subdirektori `template` yang ada pada direktori `main` (`main/templates`) agar dapat menggunakan `base.html` sebagai template dasarnya. Berikut adalah perubahan kode yang saya lakukan.
+    ```html
+    {% extends 'base.html' %}
+    {% block content %}
+
+    <h1>{{ app_name }}</h1>
+
+    <h5>Name: </h5>
+    <p>{{ name }}</p>
+    <h5>Class: </h5>
+    <p>{{ class }}</p>
+    {% endblock content %}
+    ```
+    Dengan perubahan tersebut, berkas `main.html` akan menggunakan `base.html` sebagai template utama.
+4. Sebelum membuat form, saya mengubah primary key dari integer menjadi UUID terlebih dahulu, guna mengimplementasikan *best practice* dari sisi keamanan aplikasi. Untuk itu, saya melakukan perubahan pada berkas `models.py` yang terdapat di subdirektori `main/`. Berikut adalah kode yang saya tambahkan.
+    ```python
+    import uuid  # saya menambahkan baris ini di paling atas
+    ...
+    class Product(models.Model):
+        id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  # saya menambahkan baris ini
+        name = models.CharField(max_length=255)
+        price = models.IntegerField()
+        description = models.TextField()
+    ```
+5. Karena saya melakukan perubahan pada `models.py`, maka saya harus melakukan migrasi model kembali untuk merefleksikan perubahan tersebut ke basis data. Migrasi dilakukan dengan menjalankan perintah berikut.
+    ```
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
+6. Untuk membuat form, kita perlu membuat berkas baru bernama `forms.py` di dalam direktori `main`. Form ini akan digunakan untuk membuat struktur form yang dapat menerima entry atau data item baru. Berikut adalah isi dari `forms.py` yang saya buat.
+    ```py
+    from django.forms import ModelForm
+    from main.models import Product
+
+    class ItemForm(ModelForm):
+        class Meta:
+            model = Product
+            fields = ["name", "price", "description"]
+    ```
+    Karena nama model yang saya gunakan pada `models.py` adalah `Product`, maka saya perlu melakukan import `Product` pada awal kode. Kemudian, saya mendefinisikan class `ItemForm` sebagai form yang akan saya gunakan. Di dalam class `ItemForm` terdapat class `Meta` yang memiliki atribut `model` yang menunjukkan model yang akan saya gunakan untuk form, di mana data form akan disimpan menjadi sebuah objek `Product`, kemudian atribut `fields` yang menunjukkan *fields* yang akan diinput pada form.
+7. Setelah itu, saya memodifikasi `views.py` agar dapat menampilkan form. Pertama, saya menambahkan beberapa import sebagai berikut. 
+    ```python
+    from django.shortcuts import render, redirect
+    from main.forms import ItemForm
+    from main.models import Product
+    ```
+    - `redirect` untuk melakukan redirect, yaitu mengarahkan pengguna ke halaman lain setelah melakukan submit pada form
+    - `ItemForm` mengimpor form ke views agar dapat digunakan untuk menangani input data
+    - `Product` mengimpor model dari basis data, sehingga views dapat mengakses data tersebut sesuai kebutuhan
+
+    Kedua, saya menambahkan fungsi baru dengan nama `create_item` dan parameter `request` yang akan menghasilkan form yang dapat menambahkan data item baru secara otomatis ketika data di-submit dari form. Berikut adalah kode yang saya tambahkan.
+    ```python
+    def create_item(request):
+        form = ItemForm(request.POST or None)
+
+        if form.is_valid() and request.method == "POST":
+            form.save()
+            return redirect('main:show_main')
+        
+        context = {'form': form}
+        return render(request, "create_item.html", context)
+    ```
+    Secara garis besar, fungsi ini akan menampilkan form dengan membuka halaman `create_item.html`. Apabila form di-submit (dengan request method POST) dan isinya valid, maka data yang diinput akan disimpan ke dalam basis data, kemudian website akan melakukan redirect ke fungsi `show_main`, yaitu halaman utama. 
+
+    Ketiga, saya mengubah fungsi `show_main` menjadi seperti di bawah ini.
+    ```python
+    def show_main(request):
+        items = Product.objects.all()
+
+        context = {
+            'app_name' : 'Bungalapak',
+            'name' : 'Khansa Khairunisa',
+            'class' : 'PBP C',
+            'items' : items
+        }
+
+        return render(request, "main.html", context)
+    ```
+    Dengan `Product.objects.all()`, saya mengambil seluruh objek `Product` yang ada di dalam basis data, lalu menambahkannya ke dalam `context` sebagai value untuk ditampilkan di HTML. 
+8. Setelah melakukan modifikasi pada `views.py`, saya melakukan modifikasi juga pada `urls.py` yang ada pada direktori `main`. Berikut adalah kode yang saya tambahkan. 
+    ```python
+    from main.views import show_main, create_item
+    ...
+    urlpatterns = [
+        ...
+        path('create-item', create_item, name='create_item'),
+    ]
+    ```
+    Saya mengimport `create_item` dari `views.py`, serta menambahkan path untuk halaman form. 
+9. Selanjutnya, saya membuat berkas HTML baru untuk halaman form yang bernama `create_item.html` pada direktori `main/templates`. Saya mengisi berkas tersebut dengan kode berikut.
+    ```html
+    {% extends 'base.html' %} 
+    {% block content %}
+    <h1>Add New Item</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Add Item" />
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
+    Secara garis besar, berkas HTML ini menggunakan `base.html` sebagai template dasar (dengan extends), kemudian mendefinisikan content untuk mengisi block content yang sudah didefinisikan pula pada `base.html`. Berkas HTML membuat halaman form dengan menampilkan *fields* form yang sudah dibuat pada `forms.py` sebagai tabel. Terdapat pula `csrf_token` yang berfungsi sebagai *security*. 
+10. Terakhir, pada berkas `main.html` yang terdapat pada direktori `main/templates`, saya menambahkan kode berikut di dalam `{% block content %}` dan di bawah elemen yang sudah ada sebelumnya. 
+    ```html
+    {% if not items %}
+    <p>Belum ada data item pada Bungalapak</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+
+        {% for item in items %}
+        <tr>
+            <th>{{item.name}}</th>
+            <th>{{item.price}}</th>
+            <th>{{item.description}}</th>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <br />
+
+    <a href="{% url 'main:create_item' %}">
+        <button>Add New Item</button>
+    </a>
+    {% endblock content %}
+    ```
+    Secara garis besar, bagian HTML ini menampilkan item yang ada pada basis data dalam bentuk tabel dan menambahkan tombol pada bagian bawah untuk membuat item baru. Pada bagian atas, saya menambahkan sebuah if-statement yang memeriksa `items`. Apabila `items` kosong, maka tidak ada item yang ditampilkan. Namun, apabila `items` tidak kosong, halaman akan menampilkan data item dalam bentuk tabel. Kode ini juga menggunakan loop untuk melakukan iterasi dari setiap item yang ada dalam `items`. 
+
+#### Menambahkan fungsi views untuk melihat objek dalam format XML, JSON, XML by ID, dan JSON by ID
+#### Membuat routing URL untuk masing-masing views
+
+### Mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+
+### Mana yang lebih baik di antara XML dan JSON? Mengapa JSON lebih populer dibandingkan dengan XML?
+
+### Fungsi dari method is_valid() pada form Django dan alasan mengapa kita membutuhkan method tersebut
+
+### Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+### Mengakses URL melalui Postman
