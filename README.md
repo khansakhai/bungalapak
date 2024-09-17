@@ -336,13 +336,63 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     Secara garis besar, bagian HTML ini menampilkan item yang ada pada basis data dalam bentuk tabel dan menambahkan tombol pada bagian bawah untuk membuat item baru. Pada bagian atas, saya menambahkan sebuah if-statement yang memeriksa `items`. Apabila `items` kosong, maka tidak ada item yang ditampilkan. Namun, apabila `items` tidak kosong, halaman akan menampilkan data item dalam bentuk tabel. Kode ini juga menggunakan loop untuk melakukan iterasi dari setiap item yang ada dalam `items`. 
 
 #### Menambahkan fungsi views untuk melihat objek dalam format XML, JSON, XML by ID, dan JSON by ID
+11. Sebelum bisa menampilkan data dalam formal XML dan JSON, saya menambahkan beberapa *module* untuk di-import pada berkas `views.py` di dalam direktori `main`.
+    ```python
+    from django.http import HttpResponse
+    from django.core import serializers
+    ```
+    - `HttpResponse` digunakan untuk mengirimkan respon HTTP ke client. Dalam kasus ini, kita gunakan untuk mengembalikan data dalam format XML dan JSON yang dihasilkan oleh serializers
+    - `serializers` digunakan untuk men-translate objek model menjadi format lain. Dalam kasus, ini kita gunakan untuk men-translate objek menjadi XML dan JSON
+12. Untuk menampilkan data dalam bentuk XML, saya menambahkan 2 fungsi baru pada `views.py` yang ada di dalam direktori `main`.
+    ```python
+    def show_xml(request):
+        data = Product.objects.all()
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+    def show_xml_by_id(request, id):
+        data = Product.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+    Fungsi yang pertama akan mengembalikan seluruh objek yang ada pada database dalam bentuk XML. Hal ini dilakukan dengan mengambil seluruh objek yang ada pada model, kemudian melakukan serializing terhadap data tersebut menjadi XML, dan dikembalikan sebagai respon HTTP. Tidak jauh berbeda dengan fungsi yang pertama, fungsi kedua mengambil objek yang di-filtering berdasarkan ID tertentu dan hanya objek dengan ID yang sesuai/sama yang akan diambil.
+13. Untuk menampilkan data dalam bentuk JSON, saya menambahkan 2 fungsi baru pada `views.py` yang ada di dalam direktori `main`.
+    ```python
+    def show_json(request):
+        data = Product.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+    def show_json_by_id(request, id):
+        data = Product.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+    Kedua fungsi ini memiliki cara kerja yang sama persis dengan kedua fungsi XML sebelumnya, hanya saja objek di-serialize menjadi JSON. 
+
 #### Membuat routing URL untuk masing-masing views
+14. Untuk membuat routing URL, saya mengimpor fungsi-fungsi XML san JSON yang telah saya buat ke dalam berkas `urls.py` yang ada di direktori `main`.
+    ```python
+    from main.views import show_main, create_item, show_xml, show_json, show_xml_by_id, show_json_by_id
+    ```
+15. Kemudian, masih dalam berkas yang sama, saya menambahkan path URL untuk masing-masing fungsi yang saya import tadi, agar fungsi-fungsi tersebut dapat diakses. 
+    ```python
+    urlpatterns = [
+        ...
+        path('xml/', show_xml, name='show_xml'),
+        path('json/', show_json, name='show_json'),
+        path('xml/<str:id>/', show_xml_by_id, name='show_xml_by_id'),
+        path('json/<str:id>/', show_json_by_id, name='show_json_by_id')
+    ]
+    ```
+    Path yang pertama dan kedua adalah untuk menampilkan seluruh data dalam database dalam format XML atau JSON, yang menggunakan fungsi `show_xml` dan `show_json` pada `views.py`. Sedangkan, path yang ketiga dan keempat adalah untuk menampilkan data yang sesuai berdasarkan ID yang di-input pada path dalam format XML atau JSON menggunakan fungsi `show_xml_by_id` dan `show_json_by_id`. Misalnya, untuk melihat data dengan ID 1 dalam bentuk XML, kita dapat membuat URL `http://localhost:8000/xml/1/`, dan seterusnya. 
 
 ### Mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
+Data delivery menjadi hal yang sangat penting dalam pengimplementasian platform dinamis untuk memungkinkan proses CRUD (Create, Read, Update, Delete) secara efisien antara client dan server. Dengan menggunakan format seperti XML, JSON, dan juga HTML, data dapat dikirim dan diterima dengan cepat dan tepat, sehingga komunikasi antara client dan platform akan menjadi lebih efisien dan mudah. Tanpa adanya data delivery yang efektif, pengalaman client akan terganggu oleh lambatnya waktu respons dan kesulitan dalam mengakses atau memperbarui informasi. 
 
 ### Mana yang lebih baik di antara XML dan JSON? Mengapa JSON lebih populer dibandingkan dengan XML?
+JSON lebih populer di kalangan masyarakat karena sering kali dianggap lebih baik daripada XML. Hal ini disebabkan oleh beberapa kelebihan JSON dibandingkan dengan XML, di mana JSON memiliki sintaks yang lebih mudah dipahami, struktur yang lebih sederhana, dan lebih ringan. JSON juga lebih efisien dalam hal ukuran data dan kecepatan transmisi data, sementara XML memiliki struktur yang lebih kompleks sehingga menghasilkan file yang menggunakan banyak ruang. Melihat keunggulan JSON tersebut, saya pun merasa JSON lebih unggul jika dibandingkan dengan XML. Kepraktisan dan efisiensi JSON membuatnya lebih populer dan disukai oleh banyak orang. 
 
-### Fungsi dari method is_valid() pada form Django dan alasan mengapa kita membutuhkan method tersebut
+### Fungsi dari method `is_valid()` pada form Django dan alasan mengapa kita membutuhkan method tersebut
+Method `is_valid()` pada form Django digunakan untuk memvalidasi data yang di-input oleh pengguna sebelum diproses lebih lanjut. Ketika method `is_valid()` dipanggil, Django akan memeriksa apakah data yang dikirimkan oleh pengguna sesuai dengan aturan validasi yang ditentukan dalam form. Kita membutuhkan method ini untuk memastikan bahwa data yang diterima adalah valid dan sesuai dengan kriteria yang sudah kita tetapkan dalam form, sehingga menghindari adanya kesalahan atau inkonsistensi data. 
 
-### Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+### Mengapa kita membutuhkan `csrf_token` saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan `csrf_token` pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+Pada form Django, `csrf_token` digunakan untuk melindungi aplikasi web dari serangan CSRF (Cross-Site Request Forgery). Serangan CSRF terjadi ketika penyerang memanfaatkan sesi pengguna yang sudah terautentikasi untuk mengirimkan permintaan (*request*) yang tidak sah atau berbahaya ke server, seperti mengubah data, ataupun melakukan tindakan-tindakan lain yang tidak diinginkan atas nama pengguna tersebut. `csrf_token` memastikan bahwa setiap permintaan form yang dikirimkan benar-benar berasal dari pengguna karena token unik ini harus disertakan dalam setiap form dan dicocokkan oleh server. Tanpa adanya `csrf_token`, penyerang dapat menyisipkan form berbahaya pada situs web yang mereka kendalikan, yang secara otomatis mengirimkan permintaan kepada aplikasi web target. Jika permintaan tersebut tidak divalidasi dengan token, server akan menerima dan memprosesnya seolah-olah berasal dari pengguna yang sah, memungkinkan penyerang untuk melakukan perubahan atau tindakan yang tidak diinginkan tanpa sepengetahuan pengguna yang sebenarnya.
+
 ### Mengakses URL melalui Postman
