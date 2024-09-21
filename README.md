@@ -151,6 +151,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     git branch -M master
     ```
 28. Setelah menunggu beberapa menit, aplikasi saya sudah terdeploy dan dapat diakses melalui tautan deployment PWS.
+</details>
 
 ### Bagan alur MVT
 ![MVT Diagram](images/mvt_diagram.png)
@@ -170,8 +171,8 @@ Pada tugas ini, akan dilakukan implementasi dari Form dan Data Delivery pada Dja
 
 ### Langkah Implementasi Checklist
 Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 3.
-
-#### Membuat input form
+<details>
+<summary>Membuat input form</summary>
 1. Sebelum membuat form, saya membuat kerangka views dari situs web. Untuk itu, saya membuat direktori baru `templates` di direktori utama (root folder) dan membuat berkas baru bernama `base.html` di dalamnya. Saya mengisi berkas tersebut dengan kode berikut.
     ```html
     {% load static %}
@@ -341,8 +342,9 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     {% endblock content %}
     ```
     Secara garis besar, bagian HTML ini menampilkan item yang ada pada basis data dalam bentuk tabel dan menambahkan tombol pada bagian bawah untuk membuat item baru. Pada bagian atas, saya menambahkan sebuah if-statement yang memeriksa `items`. Apabila `items` kosong, maka tidak ada item yang ditampilkan. Namun, apabila `items` tidak kosong, halaman akan menampilkan data item dalam bentuk tabel. Kode ini juga menggunakan loop untuk melakukan iterasi dari setiap item yang ada dalam `items`. 
-
-#### Menambahkan fungsi views untuk melihat objek dalam format XML, JSON, XML by ID, dan JSON by ID
+</details>
+<details>
+<summary>Menambahkan fungsi views untuk melihat objek dalam format XML, JSON, XML by ID, dan JSON by ID</summary>
 11. Sebelum bisa menampilkan data dalam formal XML dan JSON, saya menambahkan beberapa *module* untuk di-import pada berkas `views.py` di dalam direktori `main`.
     ```python
     from django.http import HttpResponse
@@ -372,8 +374,9 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
         return HttpResponse(serializers.serialize("json", data), content_type="application/json")
     ```
     Kedua fungsi ini memiliki cara kerja yang sama persis dengan kedua fungsi XML sebelumnya, hanya saja objek di-serialize menjadi JSON. 
-
-#### Membuat routing URL untuk masing-masing views
+</details>
+<details>
+<summary>Membuat routing URL untuk masing-masing views</summary>
 14. Untuk membuat routing URL, saya mengimpor fungsi-fungsi XML san JSON yang telah saya buat ke dalam berkas `urls.py` yang ada di direktori `main`.
     ```python
     from main.views import show_main, create_item, show_xml, show_json, show_xml_by_id, show_json_by_id
