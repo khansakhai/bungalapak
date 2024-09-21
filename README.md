@@ -9,7 +9,9 @@ Pada tugas ini, akan dilakukan implementasi dari konsep *Model-View-Template* (M
 ### Langkah Implementasi Checklist
 Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 2.
 
-#### Membuat proyek Django
+<details>
+<summary>Membuat proyek Django</summary>
+
 1. Langkah pertama, saya membuat direktori baru dengan nama `bungalapak` dan masuk ke dalam direktori tersebut.
 2. Setelah itu, saya membuat *virtual environment* dengan menjalankan perintah berikut di terminal.
     ```
@@ -57,6 +59,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     git commit -m "UPDATE .gitignore"
     git push -u origin master
     ```
+</details>
 
 #### Membuat aplikasi dengan nama main
 14. Untuk membuat aplikasi baru bernama `main` dalam proyek `bungalapak`, saya menjalankan perintah berikut.
