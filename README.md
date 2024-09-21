@@ -9,8 +9,7 @@ Pada tugas ini, akan dilakukan implementasi dari konsep *Model-View-Template* (M
 ### Langkah Implementasi Checklist
 Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 2.
 
-<details>
-<summary>Membuat proyek Django</summary>
+#### Membuat proyek Django
 1. Langkah pertama, saya membuat direktori baru dengan nama `bungalapak` dan masuk ke dalam direktori tersebut.
 2. Setelah itu, saya membuat *virtual environment* dengan menjalankan perintah berikut di terminal.
     ```
@@ -58,17 +57,15 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     git commit -m "UPDATE .gitignore"
     git push -u origin master
     ```
-</details>
-<details>
-<summary>Membuat aplikasi dengan nama main</summary>
+
+#### Membuat aplikasi dengan nama main
 14. Untuk membuat aplikasi baru bernama `main` dalam proyek `bungalapak`, saya menjalankan perintah berikut.
     ```
     python manage.py startapp main
     ```
 15. Kemudian, saya menambahkan nama aplikasi `'main'` pada variabel `INSTALLED_APPS` di berkas `settings.py`
-</details>
-<details>
-<summary>Melakukan routing pada proyek</summary>
+
+#### Melakukan routing pada proyek
 16. Agar proyek dapat menjalankan aplikasi `main`, route proyek perlu dikonfigurasi. Untuk itu, saya membuka berkas `urls.py` yang terdapat di dalam direktori proyek `bungalapak` dan melakukan beberapa perubahan kode sebagai berikut.
     ```python
     from django.urls import path, include
@@ -80,9 +77,8 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     ]
     ```
     Saya mengimpor include agar berkas routing ini dapat mengimpor atau menyertakan route yang sudah didefinisikan oleh aplikasi lain ke dalam routing utama proyek, yaitu `urls.py` aplikasi `main`. Dengan menggunakan `path('', include('main.urls'))`, semua permintaan ke URL utama akan langsung dipetakan ke route yang didefinisikan dalam dalam berkas `urls.py` aplikasi `main`, sehingga pengguna tidak perlu menambahkan `/main` pada URL untuk mengakses halaman aplikasi `main`.
-</details>
-<details>
-<summary>Membuat model pada aplikasi main</summary>
+
+#### Membuat model pada aplikasi main
 17. Untuk membuat model, saya memodifikasi berkas `models.py` pada direktori aplikasi `main` dengan model bernama `Product` yang memiliki atribut `name`, `price`, dan `description`. Berikut adalah kode yang saya tambahkan.
     ```python
     class Product(models.Model):
@@ -97,9 +93,8 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     python manage.py migrate
     ```
     Dengan perintah tersebut, penambahan model sudah 'tertanam' pada aplikasi dan basis data sudah disesuaikan. 
-</details>
-<details>
-<summary>Membuat fungsi pada views.py</summary>
+
+#### Membuat fungsi pada views.py
 19. Setelah mendefinisikan model, saya membuat direktori baru bernama `templates` di dalam direktori aplikasi `main` dan membuat berkas baru bernama `main.html` di dalam direktori `templates`. 
 20. Kemudian, saya menambahkan berkas `main.html` dengan nama aplikasi, nama, dan kelas. Berikut adalah kode yang saya tambahkan.
     ```html
@@ -124,9 +119,8 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
         return render(request, "main.html", context)
     ```
     Pertama, saya mengimpor fungsi `render` dari modul `django.shortcuts` agar dapat melakukan render pada tampilan HTML menggunakan data yang ada. Kemudian, pada fungsi `show_main`, terdapat dictionary `context` yang berisi data yang ingin saya tampilkan pada aplikasi saya. Setelah itu, saya mengembalikan `render(request, "main.html", context)`, yang di mana fungsi `render()` ini akan me-render data pada `context` ke template `main.html` agar ditampilkan sebagai data yang dinamis. 
-</details>
-<details>
-<summary>Membuat routing pada urls.py aplikasi main</summary>
+
+#### Membuat routing pada urls.py aplikasi main
 22. Agar aplikasi `main` dapat dijalankan pada proyek, kita perlu melakukan konfigurasi pada aplikasi `main` itu sendiri. Untuk itu, saya membuat berkas `urls.py` di dalam direktori aplikasi `main` dan menambahkan berkas dengan kode berikut.
     ```python
     from django.urls import path
@@ -139,9 +133,8 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     ]
     ```
     Untuk mendefinisikan pola URL aplikasi `main`, kita menggunakan `path` dari `django.urls` dan memanggil `path('', show_main, name="show_main")` untuk mendefinisikan fungsi `show_main` dari `main.views` sebagai tampilan yang akan dimunculkan ketika URL aplikasi diakses.
-</details>
-<details>
-<summary>Melakukan deployment ke PWS</summary>
+
+#### Melakukan deployment ke PWS
 23. Untuk melakukan deployment ke PWS, saya membuka website PWS dan membuat proyek baru bernama `bungalapak`. 
 24. Kemudian, saya menambahkan URL deployment PWS pada variabel `ALLOWED_HOSTS` di berkas `settings.py`. 
 25. Setelahnya, saya melakukan `add`, `commit`, dan `push` perubahan tersebut ke *repository* GitHub
@@ -151,7 +144,6 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     git branch -M master
     ```
 28. Setelah menunggu beberapa menit, aplikasi saya sudah terdeploy dan dapat diakses melalui tautan deployment PWS.
-</details>
 
 ### Bagan alur MVT
 ![MVT Diagram](images/mvt_diagram.png)
@@ -171,8 +163,8 @@ Pada tugas ini, akan dilakukan implementasi dari Form dan Data Delivery pada Dja
 
 ### Langkah Implementasi Checklist
 Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 3.
-<details>
-<summary>Membuat input form</summary>
+
+#### Membuat input form
 1. Sebelum membuat form, saya membuat kerangka views dari situs web. Untuk itu, saya membuat direktori baru `templates` di direktori utama (root folder) dan membuat berkas baru bernama `base.html` di dalamnya. Saya mengisi berkas tersebut dengan kode berikut.
     ```html
     {% load static %}
@@ -342,9 +334,8 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     {% endblock content %}
     ```
     Secara garis besar, bagian HTML ini menampilkan item yang ada pada basis data dalam bentuk tabel dan menambahkan tombol pada bagian bawah untuk membuat item baru. Pada bagian atas, saya menambahkan sebuah if-statement yang memeriksa `items`. Apabila `items` kosong, maka tidak ada item yang ditampilkan. Namun, apabila `items` tidak kosong, halaman akan menampilkan data item dalam bentuk tabel. Kode ini juga menggunakan loop untuk melakukan iterasi dari setiap item yang ada dalam `items`. 
-</details>
-<details>
-<summary>Menambahkan fungsi views untuk melihat objek dalam format XML, JSON, XML by ID, dan JSON by ID</summary>
+
+#### Menambahkan fungsi views untuk melihat objek dalam format XML, JSON, XML by ID, dan JSON by ID
 11. Sebelum bisa menampilkan data dalam formal XML dan JSON, saya menambahkan beberapa *module* untuk di-import pada berkas `views.py` di dalam direktori `main`.
     ```python
     from django.http import HttpResponse
@@ -374,9 +365,8 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
         return HttpResponse(serializers.serialize("json", data), content_type="application/json")
     ```
     Kedua fungsi ini memiliki cara kerja yang sama persis dengan kedua fungsi XML sebelumnya, hanya saja objek di-serialize menjadi JSON. 
-</details>
-<details>
-<summary>Membuat routing URL untuk masing-masing views</summary>
+
+#### Membuat routing URL untuk masing-masing views
 14. Untuk membuat routing URL, saya mengimpor fungsi-fungsi XML san JSON yang telah saya buat ke dalam berkas `urls.py` yang ada di direktori `main`.
     ```python
     from main.views import show_main, create_item, show_xml, show_json, show_xml_by_id, show_json_by_id
@@ -392,7 +382,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     ]
     ```
     Path yang pertama dan kedua adalah untuk menampilkan seluruh data dalam database dalam format XML atau JSON, yang menggunakan fungsi `show_xml` dan `show_json` pada `views.py`. Sedangkan, path yang ketiga dan keempat adalah untuk menampilkan data yang sesuai berdasarkan ID yang di-input pada path dalam format XML atau JSON menggunakan fungsi `show_xml_by_id` dan `show_json_by_id`. Misalnya, untuk melihat data dengan ID 1 dalam bentuk XML, kita dapat membuat URL `http://localhost:8000/xml/1/`, dan seterusnya. 
-</details>
+
 ### Mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 Data delivery menjadi hal yang sangat penting dalam pengimplementasian platform dinamis untuk memungkinkan proses CRUD (Create, Read, Update, Delete) secara efisien antara client dan server. Dengan menggunakan format seperti XML, JSON, dan juga HTML, data dapat dikirim dan diterima dengan cepat dan tepat, sehingga komunikasi antara client dan platform akan menjadi lebih efisien dan mudah. Tanpa adanya data delivery yang efektif, pengalaman client akan terganggu oleh lambatnya waktu respons dan kesulitan dalam mengakses atau memperbarui informasi. 
 
