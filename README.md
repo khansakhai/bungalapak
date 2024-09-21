@@ -392,7 +392,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     ]
     ```
     Path yang pertama dan kedua adalah untuk menampilkan seluruh data dalam database dalam format XML atau JSON, yang menggunakan fungsi `show_xml` dan `show_json` pada `views.py`. Sedangkan, path yang ketiga dan keempat adalah untuk menampilkan data yang sesuai berdasarkan ID yang di-input pada path dalam format XML atau JSON menggunakan fungsi `show_xml_by_id` dan `show_json_by_id`. Misalnya, untuk melihat data dengan ID 1 dalam bentuk XML, kita dapat membuat URL `http://localhost:8000/xml/1/`, dan seterusnya. 
-
+</details>
 ### Mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 Data delivery menjadi hal yang sangat penting dalam pengimplementasian platform dinamis untuk memungkinkan proses CRUD (Create, Read, Update, Delete) secara efisien antara client dan server. Dengan menggunakan format seperti XML, JSON, dan juga HTML, data dapat dikirim dan diterima dengan cepat dan tepat, sehingga komunikasi antara client dan platform akan menjadi lebih efisien dan mudah. Tanpa adanya data delivery yang efektif, pengalaman client akan terganggu oleh lambatnya waktu respons dan kesulitan dalam mengakses atau memperbarui informasi. 
 
