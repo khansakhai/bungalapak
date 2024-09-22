@@ -3,6 +3,14 @@ Proyek Django untuk tugas mata kuliah Pemrograman Berbasis Platform Ganjil 2024/
 
 Tautan menuju PWS deployment dapat diakses [di sini](http://khansa-khairunisa31-bungalapak.pbp.cs.ui.ac.id/).
 
+### Daftar Isi
+
+- [Tugas 2 - Model-View-Template (MVT) pada Django](#tugas-2)
+- [Tugas 3 - Form dan Data Delivery pada Django](#tugas-3)
+- [Tugas 4 - Autentikasi, Session, dan Cookies pada Django](#tugas-4)
+
+---
+
 ## Tugas 2 
 Pada tugas ini, akan dilakukan implementasi dari konsep *Model-View-Template* (MVT) pada Django.
 
@@ -674,6 +682,45 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
 </details>
 
 ### Perbedaan antara HttpResponseRedirect() dan redirect()
+- `HttpResponseRedirect()` merupakan class bawaan Django yang digunakan untuk melakukan pengalihan (redirect) ke URL tertentu dengan mengembalikan status HTTP 302. Kode status 302 ini menandakan pengalihan sementara (temporary redirect), yang berarti browser akan diarahkan ke URL tujuan, tetapi URL aslinya tidak dianggap berubah secara permanen. Berikut adalah contoh penggunaannya:
+    ```python
+    from django.http import HttpResponseRedirect
+    
+    def my_view(request):
+        return HttpResponseRedirect('/some-url/')
+    ```
+
+- `redirect()` merupakan fungsi helper bawaan Django yang digunakan untuk mengalihkan pengguna ke URL tertentu. Fungsi ini mengembalikan objek respons HTTP yang berfungsi sama seperti `HttpResponseRedirect()`, tetapi dengan cara yang lebih mudah dan fleksibel. Fungsi ini dapat menerima parameter berupa URL langsung, nama view, atau objek model, dan secara otomatis mengubahnya menjadi sebuah URL yang sesuai. Berikut adalah contoh penggunaannya: 
+    ```python
+    from django.shortcuts import redirect
+
+    def my_view(request):
+        return redirect('some_view_name')
+    ```
+
+<b>Kesimpulan</b>
+
+`HttpResponseRedirect()` dan `redirect()` memiliki fungsi yang sama, yaitu redirect atau mengalihkan pengguna ke URL tertentu, tetapi `HttpResponseRedirect()` memerlukan URL secara eksplisit, sedangkan `redirect()` lebih fleksibel karena dapat menerima URL, nama view, atau objek model, sehingga lebih mudah untuk digunakan dan meminimalisir kesalahan penulisan. 
+
 ### Cara kerja penghubungan model Product dengan User
-### Apa perbedaan antara authentication dan authorization, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+Penghubungan model `Product` dengan `User` dilakukan dengan menambahkan field `user` di dalam model `Product` menggunakan `ForeignKey`. `ForeignKey` menghubungkan setiap objek `Product` dengan satu user yang membuatnya, sehingga setiap produk pasti terasosiasi oleh user tertentu.
+
+<b>Contoh Model Product</b>
+
+```python
+from django.db import models
+from django.contrib.auth.models import User
+
+class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()
+    description = models.TextField()
+```
+`ForeignKey(User)` menunjukkan bahwa field `user` menghubungkan model `Product` dengan model `User`, sehingga setiap produk yang dibuat akan dihubungkan dengan user tertentu (user pembuatnya). `on_delete=models.CASCADE` memastikan bahwa ketika user dihapus, maka semua produk yang dimiliki user tersebut juga akan dihapus. 
+
+### Apa perbedaan antara *authentication* dan *authorization*, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+*Authentication* merupakan proses memverifikasi identitas pengguna yang mencoba untuk mengakses aplikasi Django (misalnya menggunakan username dan password), sedangkan *authorization* merupakan proses menentukan konten apa saja yang dapat diakses oleh seorang pengguna yang sudah terautentikasi, sesuai dengan hak akses yang dimilikinya (misalnya perbedaan fitur antara admin dan pengguna). Saat pengguna login, dilakukan proses *authentication* untuk memverifikasi bahwa informasi yang dimasukkan (username dan password) sesuai dengan data yang ada di database. Setelah proses *authentication* berhasil, dilakukan proses *authorization* yang akan menentukan hak akses pengguna tersebut berdasarkan peran atau izin yang telah ditetapkan. Django mengimplementasikan *authentication* melalui sistem autentikasi bawaan yang menyediakan model pengguna dan fungsi untuk login dan logout, seperti `authenticate()` dan `login()`. Untuk *authorization*, Django menggunakan sistem izin (permissions) dan grup (user group), yang memungkinkan pengembang aplikasi untuk mengatur hak akses pengguna dengan menggunakan dekorator seperti `@permission_required` dan mendefinisikan izin pada model.
+
 ### Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
+Django mengingat pengguna yang telah login dengan menggunakan session. Ketika pengguna login, Django akan membuat session untuk pengguna tersebut, menyimpan session ID di server, dan mengirimkan session ID tersebut ke browser dalam bentuk cookies. Cookies inilah yang memungkinkan Django untuk mengenali pengguna saat mereka kembali ke aplikasi. Selain itu, cookies dapat digunakan untuk menyimpan preferensi pengguna, mempersonalisasi konten pengguna, dan melacak aktivitas pengguna. Meskipun memiliki berbagai kegunaan, tidak semua cookies aman digunakan. Cookies yang tidak dikelola dengan baik dapat rentan terhadap serangan, seperti Cross-Site Scripting (XSS) dan Cross-Site Request Forgery (CSRF). Oleh karena itu, untuk membuat cookies lebih aman, penting untuk menandai cookies sebagai HttpOnly untuk mencegah akses dari JavaScript, serta menggunakan atribut Secure untuk memastikan cookies hanya dikirim melalui koneksi HTTPS.
