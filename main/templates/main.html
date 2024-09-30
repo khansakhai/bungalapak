@@ -24,6 +24,22 @@
         <th>{{item.price}}</th>
         <th>{{item.description}}</th>
     </tr>
+    <tr>
+        <td>
+            <a href="{% url 'main:edit_item' item.pk %}">
+                <button>
+                    Edit
+                </button>
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'main:delete_item' item.pk %}">
+                <button>
+                    Delete
+                </button>
+            </a>
+        </td>
+    </tr>
     {% endfor %}
 </table>
 {% endif %}
