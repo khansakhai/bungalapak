@@ -18,6 +18,7 @@ def show_main(request):
 
     context = {
         'app_name' : 'Bungalapak',
+        'npm' : '2306152462',
         'name' : request.user.username,
         'class' : 'PBP C',
         'items' : items,

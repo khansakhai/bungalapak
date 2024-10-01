@@ -5,6 +5,66 @@
 {% endblock meta %}
 
 {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Left Section - Form -->
+        <div class="p-8 lg:p-16 bg-white">
+            <div class="flex flex-col justify-between h-full">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Log in.</h2>
+                    <p class="text-gray-500 mb-8">Log in with your data that you entered during your registration.</p>
+                    
+                    <form class="space-y-6" method="POST" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="remember" value="true">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="username" class="sr-only">Username</label>
+                                <input id="username" name="username" type="text" required class="appearance-none rounded-md w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c98895] focus:border-[#c98895] sm:text-sm" placeholder="Enter your email address">
+                            </div>
+                            <div>
+                                <label for="password" class="sr-only">Password</label>
+                                <input id="password" name="password" type="password" required class="appearance-none rounded-md w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c98895] focus:border-[#c98895] sm:text-sm" placeholder="Enter your password">
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#c98895] hover:bg-[#b66878] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c98895]">
+                                Log in
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-8">
+                        <p class="text-sm text-gray-500">
+                            Don't have an account?
+                            <a href="{% url 'main:register' %}" class="font-medium text-[#d49ba7] hover:text-[#b66878]">Register</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section - Illustration -->
+        <div class="hidden lg:flex items-center justify-center bg-[#fff0f3]">
+            <div class="p-8 text-center">
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Nice to see you again</h3>
+                <h1 class="text-3xl font-bold text-[#b66878]">Welcome back</h1>
+                <img src="https://via.placeholder.com/400" alt="Welcome Back Illustration" class="mt-8">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% comment %} {% extends 'base.html' %}
+
+{% block meta %}
+<title>Login</title>
+{% endblock meta %}
+
+{% block content %}
 <div class="login">
     <h1>Login</h1>
 
@@ -29,4 +89,4 @@
     <a href="{% url 'main:register' %}">Register Now</a>
 </div>
 
-{% endblock content %}
+{% endblock content %} {% endcomment %}

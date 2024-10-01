@@ -8,6 +8,7 @@ Tautan menuju PWS deployment dapat diakses [di sini](http://khansa-khairunisa31-
 - [Tugas 2 - Model-View-Template (MVT) pada Django](#tugas-2)
 - [Tugas 3 - Form dan Data Delivery pada Django](#tugas-3)
 - [Tugas 4 - Autentikasi, Session, dan Cookies pada Django](#tugas-4)
+- [Tugas 5 - Desain Web menggunakan HTML, CSS dan Framework CSS](#tugas-5)
 
 ---
 
@@ -724,3 +725,42 @@ class Product(models.Model):
 
 ### Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari cookies dan apakah semua cookies aman digunakan?
 Django mengingat pengguna yang telah login dengan menggunakan session. Ketika pengguna login, Django akan membuat session untuk pengguna tersebut, menyimpan session ID di server, dan mengirimkan session ID tersebut ke browser dalam bentuk cookies. Cookies inilah yang memungkinkan Django untuk mengenali pengguna saat mereka kembali ke aplikasi. Selain itu, cookies dapat digunakan untuk menyimpan preferensi pengguna, mempersonalisasi konten pengguna, dan melacak aktivitas pengguna. Meskipun memiliki berbagai kegunaan, tidak semua cookies aman digunakan. Cookies yang tidak dikelola dengan baik dapat rentan terhadap serangan, seperti Cross-Site Scripting (XSS) dan Cross-Site Request Forgery (CSRF). Oleh karena itu, untuk membuat cookies lebih aman, penting untuk menandai cookies sebagai HttpOnly untuk mencegah akses dari JavaScript, serta menggunakan atribut Secure untuk memastikan cookies hanya dikirim melalui koneksi HTTPS.
+
+## Tugas 5
+Pada tugas ini, akan dilakukan desain Web menggunakan HTML, CSS dan Framework CSS.
+
+### Langkah Implementasi Checklist
+Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan checklist dari Tugas 5.
+
+<details>
+<summary>Mengimplementasikan fungsi untuk menghapus dan mengedit product</summary>
+
+</details>
+
+<details>
+<summary>Kustomisasi halaman login, register, dan tambah product</summary>
+
+</details>
+
+<details>
+<summary>Kustomisasi halaman daftar product</summary>
+
+</details>
+
+<details>
+<summary>Mengimplementasikan button edit dan hapus untuk setiap card product</summary>
+
+</details>
+
+<details>
+<summary>Membuat navigation bar (navbar)</summary>
+
+</details>
+
+### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+
+### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+### Jelaskan konsep flex box dan grid layout beserta kegunaannya!

@@ -1,5 +1,76 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Bungalapak</title>
+{% endblock meta %}
 {% block content %}
+{% include 'navbar.html' %}
+
+<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-white flex flex-col">
+    <div class="p-2 mb-6 relative">
+        <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+            {% include "info_card.html" with title='NPM' value=npm %}
+            {% include "info_card.html" with title='Name' value=name %}
+            {% include "info_card.html" with title='Class' value=class %}
+        </div>
+        <div class="w-full px-6  absolute top-[44px] left-0 z-20 hidden md:flex">
+            <div class="w-full min-h-4 bg-[#b66878]">
+            </div>
+        </div>
+        <div class="h-full w-full py-6  absolute top-0 left-0 z-20 md:hidden flex ">
+            <div class="h-full min-w-4 bg-[#b66878] mx-auto">
+            </div>
+        </div>
+    </div>
+    <div class="px-3 mb-4">
+        <div class="flex rounded-md items-center bg-[#d49ba7] py-2 px-4 w-fit">
+            <h1 class="text-white text-center">Last Login: {{last_login}}</h1>
+        </div>
+    </div>
+
+    <div class="about-section bg-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-gray-900 mb-6">Discover the Art of Crafting Your Ideal Bouquet!</h2>
+            <p class="text-gray-700 text-lg mb-8">
+                Explore our curated collection of beautiful bouquets and floral arrangements, tailored to your unique preferences.
+            </p>
+            <a href="#products" class="bg-[#d49ba7] hover:bg-[#b66878] text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                Explore Now
+            </a>
+        </div>
+    </div>
+
+    <div id="products">
+        {% if not items %}
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+            <img src="{% static 'image/sedih-banget.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+            <p class="text-center text-gray-600 mt-4">Belum ada data item pada Bungalapak.</p>
+        </div>
+        {% else %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full" style="grid-auto-flow: dense;">
+            {% for item in items %}
+                {% include 'product_card.html' with item=item %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Call to Action for Adding New Item -->
+    <div class="flex flex-col items-center mb-6 mt-16 bg-[#f4d7db] py-8 w-full rounded-lg shadow-md">
+        <p class="text-gray-700 text-lg mb-4 text-center">Got a new product? Add your latest bouquet to our collection and make it available for everyone to see!</p> 
+        <a href="{% url 'main:create_item' %}" class="bg-[#d49ba7] hover:bg-[#b66878] text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+            Add New Item
+        </a>
+    </div>
+
+    {% include 'footer.html' %}
+</div>
+{% endblock content %}
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+{% include 'navbar.html' %}
 
 <h1>{{ app_name }}</h1>
 
@@ -55,4 +126,4 @@
 </a>
 
 <h5>Sesi terakhir login: {{ last_login }}</h5>
-{% endblock content %}
+{% endblock content %} {% endcomment %}

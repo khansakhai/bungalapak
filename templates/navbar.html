@@ -1,0 +1,236 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bungalapak</title>
+    <style>
+        /* Tambahan CSS untuk navbar yang berubah warna */
+        .navbar-scrolled {
+            background-color: #b66878;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .navbar-scrolled h1,
+        .navbar-scrolled a {
+            color: white !important;
+            transition: color 0.5s ease;
+        }
+
+        /* Hide checkbox */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Hamburger icon */
+        .mobile-menu-button {
+            display: block;
+            cursor: pointer;
+        }
+
+        /* Line style for hamburger icon */
+        .mobile-menu-button span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #b66878;
+            margin: 5px 0;
+            transition: all 0.4s ease;
+        }
+
+        /* Menu hidden by default */
+        .mobile-menu {
+            display: none;
+        }
+
+        /* Show menu when checkbox is checked */
+        input[type="checkbox"]:checked ~ .mobile-menu {
+            display: block;
+        }
+
+        /* Mobile menu styling */
+        .mobile-menu {
+            background-color: #b66878;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            background-color: #a05464;
+        }
+
+        /* Hamburger animation */
+        input[type="checkbox"]:checked + .mobile-menu-button span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        input[type="checkbox"]:checked + .mobile-menu-button span:nth-child(2) {
+            opacity: 0;
+        }
+
+        input[type="checkbox"]:checked + .mobile-menu-button span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Hide the mobile-menu button on larger screens */
+        @media(min-width: 768px) {
+            .mobile-menu-button {
+                display: none;
+            }
+            .mobile-menu {
+                display: none !important;
+            }
+        }
+
+        /* Desktop Navbar Styling */
+        nav {
+            background-color: white;
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 40;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            color: #b66878;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 20px;
+            transition: background 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #a05464;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar bg-white fixed top-0 left-0 z-40 w-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-center text-[#b66878]">Bungalapak</h1>
+                </div>
+                <!-- Mobile menu button -->
+                <input type="checkbox" id="menu-toggle" />
+                <label for="menu-toggle" class="mobile-menu-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+
+                <!-- Mobile menu -->
+                <div class="mobile-menu">
+                    <a href="#home" class="text-white">Home</a>
+                    <a href="#products" class="text-white">Products</a>
+                    <a href="#contacts" class="text-white">Contacts</a>
+                    <a href="#about" class="text-white">About</a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-4 font-bold">
+                    <a href="#home" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">Home</a>
+                    <a href="#products" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">Products</a>
+                    <a href="#contacts" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">Contacts</a>
+                    <a href="#about" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</body>
+</html> {% endcomment %}
+
+
+
+<!-- Navbar -->
+<nav class="navbar bg-white fixed top-0 left-0 z-40 w-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-center text-[#b66878]">Bungalapak</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-4 font-bold">
+                    <a href="{% url 'main:show_main' %}" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">
+                        Home
+                    </a>
+                    <a href="{% url 'main:show_main' %}#products" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">
+                        Products
+                    </a>
+                    <a href="{% url 'main:show_main' %}#contacts" class="text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">
+                        Contacts
+                    </a>
+                {% if user.is_authenticated %}
+                    <span class="text-[#FAA943] mr-4">Welcome, {{ user.username }}</span>
+                    <a href="{% url 'main:logout' %}" class="text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'main:login' %}" class="text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mr-2">
+                        Login
+                    </a>
+                    <a href="{% url 'main:register' %}" class="text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Register
+                    </a>
+                {% endif %}
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <svg class="w-6 h-6 text-[#b66878]" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu hidden md:hidden px-4 w-full md:max-w-full">
+        <div class="pt-2 pb-3 space-y-1 mx-auto font-bold">
+                <a href="{% url 'main:show_main' %}" class="block text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">
+                    Home
+                </a>
+                <a href="{% url 'main:show_main' %}#products" class="block text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">
+                    Products
+                </a> 
+                <a href="{% url 'main:show_main' %}#contacts" class="block text-[#b66878] hover:bg-[#a05464] py-2 px-4 rounded transition duration-300">
+                    Contacts
+                </a>
+            {% if user.is_authenticated %}
+                <span class="block text-[#FAA943] px-3 py-2">Welcome, {{ user.username }}</span>
+                <a href="{% url 'main:logout' %}" class="block text-center bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{% url 'main:login' %}" class="block text-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 mb-2">
+                    Login
+                </a>
+                <a href="{% url 'main:register' %}" class="block text-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                    Register
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        const btn = document.querySelector("button.mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+      
+        btn.addEventListener("click", () => {
+          menu.classList.toggle("hidden");
+        });
+      </script>
+</nav>
