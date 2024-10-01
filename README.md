@@ -906,10 +906,14 @@ Saya membuat 1 card untuk setiap produk yang ada pada database, yang terdiri dar
 
 ### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
 Urutan prioritas CSS selector ditentukan oleh specificity (spesifisitas). CSS selector yang lebih spesifik akan diutamakan. Berikut adalah urutan prioritas dari beberapa jenis CSS selector dimulai dari selector yang paling diutamakan.
-*1. Inline styles* : ditulis langsung di elemen HTML, contohnya `<div style="color: green;">`
-*2. ID selector* : menggunakan ID sebagai selektor dan implementasinya diawali dengan tanda `#`, contohnya `#header {background-color: red;}`
-*3. Class selector* : menggunakan Class sebagai selector dan implementasinya diawali dengan tanda `.`, contohnya `.content_section {background-color: #b66878;}`
-*4. Element selector* : menggunakan elemen (seperti div, p) sebagai selector, contohnya `div { color: black; }`.
+<br>
+**1. Inline styles** : ditulis langsung di elemen HTML, contohnya `<div style="color: green;">`
+<br>
+**2. ID selector** : menggunakan ID sebagai selektor dan implementasinya diawali dengan tanda `#`, contohnya `#header {background-color: red;}`
+<br>
+**3. Class selector** : menggunakan Class sebagai selector dan implementasinya diawali dengan tanda `.`, contohnya `.content_section {background-color: #b66878;}`
+<br>
+**4. Element selector** : menggunakan elemen (seperti div, p) sebagai selector, contohnya `div { color: black; }`.
 Jika terdapat konflik antara selector, selector yang lebih spesifik lah yang diprioritaskan. Jika spesifisitasnya sama, CSS yang ditulis terakhir yang akan digunakan.
 
 ### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
