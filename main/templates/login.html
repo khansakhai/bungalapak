@@ -5,14 +5,64 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+<style>
+    /* Background dengan linear gradient dan animasi */
+    .animated-background {
+        height: 100vh;
+        background: linear-gradient(#FAA943, #FFFFFF, #EFC3CA, #FFFFFF, #DAABB5);
+        background-size: 300% 300%;
+        animation: moveGradient 1s ease infinite;
+    }
+
+    /* Keyframes untuk menggerakkan gradasi */
+    @keyframes moveGradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+{% comment %} <style>
+    /* Background dengan linear gradient dan animasi */
+    .animated-background {
+        height: 100vh;
+        background: linear-gradient(45deg, #ffffff, #fadee4, #ffffff, #f1d3d7, #ffffff);
+        background-size: 400% 400%;
+        animation: moveGradient 7s ease-in-out infinite;
+    }
+
+    /* Keyframes untuk menggerakkan gradasi */
+    @keyframes moveGradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        25% {
+            background-position: 50% 100%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        75% {
+            background-position: 50% 0%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style> {% endcomment %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 animated-background">
     <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white shadow-lg rounded-lg overflow-hidden">
         <!-- Left Section - Form -->
         <div class="p-8 lg:p-16 bg-white">
             <div class="flex flex-col justify-between h-full">
                 <div>
-                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Log in.</h2>
-                    <p class="text-gray-500 mb-8">Log in with your data that you entered during your registration.</p>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Log in</h2>
+                    <p class="text-gray-500 mb-8">Enter your details below to log back into your account.</p>
                     
                     <form class="space-y-6" method="POST" action="">
                         {% csrf_token %}
@@ -20,7 +70,7 @@
                         <div class="space-y-4">
                             <div>
                                 <label for="username" class="sr-only">Username</label>
-                                <input id="username" name="username" type="text" required class="appearance-none rounded-md w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c98895] focus:border-[#c98895] sm:text-sm" placeholder="Enter your email address">
+                                <input id="username" name="username" type="text" required class="appearance-none rounded-md w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#c98895] focus:border-[#c98895] sm:text-sm" placeholder="Enter your username">
                             </div>
                             <div>
                                 <label for="password" class="sr-only">Password</label>
@@ -30,15 +80,35 @@
 
                         <div>
                             <button type="submit" class="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#c98895] hover:bg-[#b66878] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c98895]">
-                                Log in
+                                Sign in
                             </button>
                         </div>
                     </form>
 
+                    {% if messages %}
+                    <div class="mt-4">
+                        {% for message in messages %}
+                        {% if message.tags == "success" %}
+                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                                    <span class="block sm:inline">{{ message }}</span>
+                                </div>
+                            {% elif message.tags == "error" %}
+                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                    <span class="block sm:inline">{{ message }}</span>
+                                </div>
+                            {% else %}
+                                <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                                    <span class="block sm:inline">{{ message }}</span>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
                     <div class="text-center mt-8">
                         <p class="text-sm text-gray-500">
                             Don't have an account?
-                            <a href="{% url 'main:register' %}" class="font-medium text-[#d49ba7] hover:text-[#b66878]">Register</a>
+                            <a href="{% url 'main:register' %}" class="font-medium text-[#d49ba7] hover:text-[#b66878]">Register here</a>
                         </p>
                     </div>
                 </div>
@@ -48,9 +118,13 @@
         <!-- Right Section - Illustration -->
         <div class="hidden lg:flex items-center justify-center bg-[#fff0f3]">
             <div class="p-8 text-center">
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">Nice to see you again</h3>
-                <h1 class="text-3xl font-bold text-[#b66878]">Welcome back</h1>
-                <img src="https://via.placeholder.com/400" alt="Welcome Back Illustration" class="mt-8">
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">
+                    Welcome to 
+                    <span class="text-[#b66878] font-extrabold">Bungalapak!</span>
+                </h3>
+                <h1 class="text-3xl font-bold text-[#d49ba7]">We’re thrilled to have you back</h1>
+                <p class="text-gray-600 mt-4">Your journey with us continues! Sign in to explore and manage new products, while enjoying personalized recommendations just for you.</p>
+                
             </div>
         </div>
     </div>

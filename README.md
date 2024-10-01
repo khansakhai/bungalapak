@@ -735,32 +735,240 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
 <details>
 <summary>Mengimplementasikan fungsi untuk menghapus dan mengedit product</summary>
 
-</details>
+1. Pertama, untuk membuat fitur edit item, saya mengimpor beberapa module dan membuat fungsi baru bernama `edit_item` di berkas `views.py` yang ada pada direktori `main`.
+    ```python
+    from django.shortcuts import .., reverse
+    from django.http import .., HttpResponseRedirect
+    ...
+    def edit_item(request, id):
+        # Get item berdasarkan id
+        item = Product.objects.get(pk = id)
 
-<details>
-<summary>Kustomisasi halaman login, register, dan tambah product</summary>
+        # Set item sebagai instance dari form
+        form = ItemForm(request.POST or None, instance=item)
 
-</details>
+        if form.is_valid() and request.method == "POST":
+            # Simpan form dan kembali ke halaman awal
+            form.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
 
-<details>
-<summary>Kustomisasi halaman daftar product</summary>
+        context = {'form': form}
+        return render(request, "edit_item.html", context)
+    ```
+2. Kemudian, saya membuat berkas baru bernama `edit_item.html` pada direktori `main/templates`. Saya mengisi berkas tersebut dengan kode berikut.
+    ```html
+    {% extends 'base.html' %}
 
+    {% load static %}
+
+    {% block content %}
+    {% include 'navbar.html' %}
+
+    <h1>Edit Item</h1>
+
+    <form method="POST">
+        {% csrf_token%}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Edit Item"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
+3. Pada berkas `urls.py` yang ada pada direktori `main`, saya import dan tambahkan path url pada pada `urlpatterns` dari fungsi `edit_item` yang sudah dibuat tadi.
+    ```python
+    from main.views import ..., edit_mood
+    ...
+    urlpatterns = [
+        ...
+        path('edit-item/<uuid:id>', edit_item, name='edit_item'),
+    ]
+    ...
+    ```
+4. Selanjutnya, untuk fitur hapus item, saya menambahkan fungsi `delete_item` pada berkas `views.py` yang ada pada direktori `main`. 
+    ```python
+    def delete_item(request, id):
+    # Get item berdasarkan id
+    item = Product.objects.get(pk = id)
+
+    # Hapus item
+    item.delete()
+
+    # Kembali ke halaman awal
+    return HttpResponseRedirect(reverse('main:show_main'))
+    ```
+5. Kemudian, pada berkas `urls.py`, saya mengimpor dan menambahkan path url pada `urlpatterns` dari fungsi `delete_item` yang sudah saya buat.
+    ```python
+    from main.views import ..., delete_mood
+    ...
+    urlpatterns = [
+        ...
+        path('delete/<uuid:id>', delete_item, name='delete_item'),
+    ]
+    ...
+    ```
 </details>
 
 <details>
 <summary>Mengimplementasikan button edit dan hapus untuk setiap card product</summary>
 
+6. Untuk menambahkan button edit dan hapus product, saya memodifikasi berkas `main.html` dengan menambahkan kode berikut
+    ```html
+    <table>
+        ...
+        <tr>
+            <td>
+                <a href="{% url 'main:edit_item' item.pk %}">
+                    <button>
+                        Edit
+                    </button>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'main:delete_item' item.pk %}">
+                    <button>
+                        Delete
+                    </button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    ```
+    Kode ini digunakan untuk membangun URL dengan menambahkan primary key (pk) dari objek item sebagai parameter. Parameter ini akan diteruskan ke fungsi view dari `edit_item` atau `delete_item`, yang membutuhkan nilai id untuk mengetahui item mana yang akan diedit atau dihapus. 
 </details>
 
 <details>
 <summary>Membuat navigation bar (navbar)</summary>
 
+7. Sebelum membuat navigation bar, saya menambahkan kode berikut di bagian head dari berkas `base.html` yang ada pada direktori `templates` untuk menyambungkan template django dengan tailwind.
+    ```html
+    ...
+    <script src="https://cdn.tailwindcss.com"></script>
+    ...
+    ```
+8. Untuk membuat navigation bar, saya membuat berkas baru bernama `navbar.html` pada folder `templates`. Saya mengisi berkas tersebut dengan kode untuk membuat navigation bar, dapat diakses pada link berikut: [navbar.html](templates/navbar.html)
+9. Setelah itu, saya menghubungkan navigation bar tersebut ke dalam berkas `main.html`, `create_item.html`, dan `edit_item.html` yang berada pada `main/templates` dengan menggunakan tag `include`. Berikut adalah potongan kode yang saya tambahkan di setiap file tadi.
+    ```html
+    {% extends 'base.html' %}
+    {% block content %}
+    {% include 'navbar.html' %}
+    ...
+    {% endblock content%}
+    ```
+10. Kemudian, saya memodifikasi berkas `settings.py` dengan potongan kode berikut.
+    ```python
+    ...
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'whitenoise.middleware.WhiteNoiseMiddleware', #Tambahkan tepat di bawah SecurityMiddleware
+        ...
+    ]
+    ...
+    STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
+    ...
+    ```
+    Dengan menambahkan `WhiteNoiseMiddleware` di `settings.py`, Django dapat mengelola file statis (seperti gambar, CSS, JS) tanpa perlu server eksternal. Saat `DEBUG=False`, `STATIC_ROOT` digunakan untuk menyimpan file statis yang siap digunakan di server produksi.
+</details>
+
+<details>
+<summary>Kustomisasi halaman login, register, dan tambah product</summary>
+
+11. Dalam melakukan kustomisasi, saya menggunakan HTML, CSS, dan Tailwind CSS. Karena kodenya terlalu panjang, saya sertakan link untuk mengakses setiap berkas di bawah ini.
+- Berkas halaman login dapat diakses pada link berikut: [login.html](main/templates/login.html) 
+- Berkas halaman register dapat diakses pada link berikut: [register.html](main/templates/register.html) 
+- Berkas halaman tambah product dapat diakses pada link berikut: [create_item.html](main/templates/create_item.html) 
+
+Halaman yang menggunakan `form.as_table` saya pecah tabelnya agar tiap bagiannya dapat saya styling dan saya jadikan komponen yang terpisah. Pada halaman login dan register, saya menambahkan pesan error atau persan sukses yang akan ditampilkan di bawah tombol submit, namun masih di dalam card besar. Kemudian, login dan register juga memiliki referensi ke url masing-masing, di mana pada halaman login terdapat link ke halaman register dan sebaliknya. 
+</details>
+
+<details>
+<summary>Kustomisasi halaman daftar product</summary>
+
+12. Untuk melakukan kustomisasi halaman daftar product, saya membuat berkas baru bernama `product_card.html` di dalam direktori `main/templates` dan memodifikasi berkas `main.html`. Pada setiap berkasnya, saya menambahkan kode untuk melakukan styling pada halaman daftar produk. Berikut adalah link menuju kedua berkas tersebut.
+- Berkas halaman product dapat diakses pada link berikut: [product_card.html](main/templates/product_card.html) 
+- Berkas halaman main dapat diakses pada link berikut: [main.html](main/templates/main.html) 
+
+Saya membuat 1 card untuk setiap produk yang ada pada database, yang terdiri dari nama, harga, dan deskripsi. Pada bagian bawah card tersebut juga tersedia button untuk mengedit dan menghapus produk. Pada `main.html`, ketika sudah ada produk pada database, halaman akan menampilkan card-card dari setiap produk. Namun, jika belum ada produk di dalam database, halaman akan menampilkan foto sedih dan text yang menyatakan bahwa belum ada produk pada database.
 </details>
 
 ### Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+Urutan prioritas CSS selector ditentukan oleh specificity (spesifisitas). CSS selector yang lebih spesifik akan diutamakan. Berikut adalah urutan prioritas dari beberapa jenis CSS selector dimulai dari selector yang paling diutamakan.
+*1. Inline styles* : ditulis langsung di elemen HTML, contohnya `<div style="color: green;">`
+*2. ID selector* : menggunakan ID sebagai selektor dan implementasinya diawali dengan tanda `#`, contohnya `#header {background-color: red;}`
+*3. Class selector* : menggunakan Class sebagai selector dan implementasinya diawali dengan tanda `.`, contohnya `.content_section {background-color: #b66878;}`
+*4. Element selector* : menggunakan elemen (seperti div, p) sebagai selector, contohnya `div { color: black; }`.
+Jika terdapat konflik antara selector, selector yang lebih spesifik lah yang diprioritaskan. Jika spesifisitasnya sama, CSS yang ditulis terakhir yang akan digunakan.
 
 ### Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+Responsive design memungkinkan tampilan dan fungsi dari sebuah website atau aplikasi web menyesuaikan berbagai ukuran layar dan perangkat pengguna, seperti desktop, smartphone, dan tablet. Konsep ini penting karena pengguna mengakses website atau aplikasi web dengan berbagai perangkat yang tentunya memiliki ukuran layar yang berbeda-beda. Dengan diterapkannya responsive design, pengguna dapat lebih nyaman mengakses situs website dengan berbagai macam perangkat, hal ini tentu meningkatkan aksesibilitas, dan membuat website tersebut banyak dikunjungi oleh banyak orang. Selain itu, hal ini akan meningkatkan SEO dan peringkat Google karena Google mengutamakan situs yang mobile-friendly dalam peringkat pencarian mereka. 
+
+<b>Contoh aplikasi yang sudah menerapkan responsive design</b>
+- Google : tampilan Google secara otomatis menyesuaikan dengan perangkat yang digunakan
+- Twitter : tampilan Twitter sudah disesuaikan dengan perangkat yang digunakan oleh user secara otomatis
+
+<b>Contoh aplikasi yang belum menerapkan responsive design</b>
+- SIAK NG : aplikasi ini memiliki tampilan yang sama walaupun diakses dengan perangkat yang berbeda
 
 ### Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+- Margin : ruang di luar elemen, yang memisahkan elemen tersebut dengan elemen lainnya
+- Border : garis yang mengelilingi elemen (garis pinggir), terletak di antara margin dan padding
+- Padding : ruang di dalam elemen, terletak di antara border dan elemen konten
+
+Untuk dapat melihat perbedaannya lebih mudah, kita dapat melihat box model berikut.
+![Box Model CSS](images/css_box_model.png)
+
+Berikut adalah contoh penggunaan ketiganya.
+```css
+.box {
+    margin: 20px auto;            /* Jarak luar dari elemen box */
+    padding: 30px;                /* Jarak di dalam box antara konten dan border */
+    border: 5px solid #b66878;    /* Border 5px dengan warna pink */
+}
+```
 
 ### Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+#### Flexbox
+Flexbox adalah metode layout CSS yang dirancang untuk mengatur elemen dalam 1 dimensi, baik secara horizontal maupun vertikal. Flexbox memudahkan pengaturan posisi elemen dalam suatu wadah (container) dengan cara yang fleksibel.
+
+<b>Kegunaan Flexbox</b>
+- Mengatur tata letak elemen secara fleksibel dalam satu baris atau kolom
+- Memungkinkan elemen dapat menyesuaikan ukuran layar, baik diperbesar maupun diperkecil
+
+<b>Contoh Penggunaan Flexbox</b>
+```css
+.container {
+    display: flex;
+    justify-content: center; /* Rata tengah secara horizontal */
+    align-items: center;     /* Rata tengah secara vertikal */
+    height: 100vh;
+}
+```
+
+#### Grid Layout
+Grid layout adalah metode layout CSS yang dirancang untuk mengatur elemen secara 2 dimensi, baik secara baris maupun kolom. Grid layout memungkinkan elemen memiliki tata letak yang lebih kompleks dengan grid berbentuk baris dan kolom.
+
+<b>Kegunaan Grid Layout</b>
+- Memungkinkan pembuatan tata letak yang lebih kompleks, yang terdiri dari baris dan kolom
+- Mengatur elemen secara presisi di tempat tertentu dalam grid, baik berdasarkan baris maupun kolom
+
+<b>Contoh Penggunaan Grid Layout</b>
+```css
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;  /* Membuat 3 kolom dengan ukuran sama */
+    grid-gap: 20px;                      /* Jarak antar elemen grid */
+}
+```
