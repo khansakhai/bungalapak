@@ -1,3 +1,29 @@
+<style>
+    /* Tambahan CSS untuk navbar yang berubah warna */
+    .navbar-scrolled {
+        background-color: #b66878;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+    .navbar-scrolled h1,
+    .navbar-scrolled a {
+        color: white !important; /* Warna teks berubah menjadi putih */
+        transition: color 0.5s ease
+    }
+    .navbar-scrolled span {
+        color: #ffd198 !important;
+        transition: color 0.5s ease
+    }
+    /* Aturan CSS untuk hover pada navbar yang sudah discroll */
+    .navbar-scrolled a:hover {
+        background-color: #a05464 !important; /* Mengubah background ketika di-hover */
+        transition: background-color 0.5s ease; /* Memperlancar transisi background */
+    }
+
+    .navbar-scrolled .mobile-menu a:hover {
+        background-color: #a05464 !important; /* Konsistensi hover di mobile menu */
+    }
+</style>
+
 <!-- Navbar -->
 <nav class="navbar bg-white fixed top-0 left-0 z-40 w-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -6,13 +32,13 @@
                 <h1 class="text-2xl font-bold text-center text-[#b66878]">Bungalapak</h1>
             </div>
             <div class="hidden md:flex items-center space-x-4 font-bold">
-                    <a href="{% url 'main:show_main' %}" class="text-[#b66878] hover:bg-gray-200 py-2 px-4 rounded transition duration-300">
+                    <a href="{% url 'main:show_main' %}" class="text-[#b66878] hover:bg-gray-300 py-2 px-4 rounded transition duration-300">
                         Home
                     </a>
-                    <a href="{% url 'main:show_main' %}#products" class="text-[#b66878] hover:bg-gray-200 py-2 px-4 rounded transition duration-300">
+                    <a href="{% url 'main:show_main' %}#products" class="text-[#b66878] hover:bg-gray-300 py-2 px-4 rounded transition duration-300">
                         Products
                     </a>
-                    <a href="{% url 'main:show_main' %}#contacts" class="text-[#b66878] hover:bg-gray-200 py-2 px-4 rounded transition duration-300">
+                    <a href="{% url 'main:show_main' %}#contacts" class="text-[#b66878] hover:bg-gray-300 py-2 px-4 rounded transition duration-300">
                         Contacts
                     </a>
                 {% if user.is_authenticated %}
@@ -71,6 +97,16 @@
       
         btn.addEventListener("click", () => {
           menu.classList.toggle("hidden");
+        });
+
+        // Navbar scroll change
+        window.addEventListener("scroll", function() {
+            const navbar = document.querySelector("nav");
+            if (window.scrollY > 100) {
+                navbar.classList.add("navbar-scrolled");
+            } else {
+                navbar.classList.remove("navbar-scrolled");
+            }
         });
       </script>
 </nav>
