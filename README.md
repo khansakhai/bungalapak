@@ -9,6 +9,7 @@ Tautan menuju PWS deployment dapat diakses [di sini](http://khansa-khairunisa31-
 - [Tugas 3 - Form dan Data Delivery pada Django](#tugas-3)
 - [Tugas 4 - Autentikasi, Session, dan Cookies pada Django](#tugas-4)
 - [Tugas 5 - Desain Web menggunakan HTML, CSS dan Framework CSS](#tugas-5)
+- [Tugas 6 - JavaScript dan AJAX](#tugas-6)
 
 ---
 
@@ -1022,7 +1023,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     <div id="item_cards"></div>
     ```
 6. Saya membuat block `<script>` di bagian bawah berkas `main.html` pada direktori `main/templates` (sebelum `{% endblock content %}`) dan membuat fungsi baru di dalam block `<script>` tersebut dengan nama `getItems` dan `refreshItems`.
-    ```html
+    ```javascript
     <script>
         async function getItems(){
             return fetch("{% url 'main:show_json' %}").then((res) => res.json())
@@ -1154,7 +1155,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
     </div>
     ```
 8. Agar modal tersebut dapat berfungsi, saya menambahkan fungsi-fungsi JavaScript berikut di dalam block `<script>`.
-    ```html
+    ```javascript
     const modal = document.getElementById('crudModal');
     const modalContent = document.getElementById('crudModalContent');
 
@@ -1237,7 +1238,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
 <summary>Menghubungkan form ke path /create-ajax/</summary>
 
 12. Pada `main.html` saya menambahkan fungsi baru pada block `<script>` dengan nama `addItem`.
-    ```html
+    ```javascript
     ...
     <script>
         function addItem() {
@@ -1259,7 +1260,7 @@ Berikut adalah langkah-langkah yang saya lakukan untuk mengimplementasikan check
 </details>
 
 <details>
-<summary>Melakukan *refresh* pada halaman utama secara asinkronus</summary>
+<summary>Melakukan refresh pada halaman utama secara asinkronus</summary>
 
 11. Hal ini sudah diimplementasikan, yaitu pada refreshProduct() yang terdapat pada `main.html`, serta sudah dipanggil setelah fungsi `fetch()` pada `addItem()` dijalankan.
 </details>
